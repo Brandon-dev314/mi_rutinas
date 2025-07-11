@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Bienvenido</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'usuarios/inicio.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            backdrop-filter: brightness(0.6);
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bienvenido a tu app de rutinas</h1>
+        <a class="btn" href="{% url 'login' %}">Iniciar sesión</a>
+    </div>
+
+    <div style="margin-top: 30px; padding: 20px; border-top: 1px solid #444; font-size: 0.9em; color: #aaa;">
+        <p>
+            <strong>Aviso Legal:</strong><br>
+            Las animaciones visuales utilizadas en esta aplicación pertenecen a sus respectivos autores y se emplean únicamente con fines educativos y personales.<br>
+            Esta plataforma es de uso privado exclusivo para <strong>[Gisela]</strong>.<br>
+            No se autoriza su distribución, reproducción ni uso comercial sin consentimiento expreso.
+        </p>
+    </div>
+</body>
+</html>

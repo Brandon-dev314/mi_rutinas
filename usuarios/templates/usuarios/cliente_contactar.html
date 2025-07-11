@@ -1,0 +1,5 @@
+{% extends 'usuarios/base_panel.html' %}
+{% block content %}
+  <h1>Contacto de tu entrenador</h1>
+  <p><strong>Nombre:</strong> {{ coach.get_full_name|default:coach.username }}</p>
+{% endblock %}

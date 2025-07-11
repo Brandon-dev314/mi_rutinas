@@ -1,0 +1,63 @@
+{% extends 'usuarios/base_panel.html' %}
+{% block title %}Mis Rutinas{% endblock %}
+{% block content %}
+  <h1>Mis Rutinas</h1>
+
+  {% if asignaciones %}
+    <div style="display:flex; flex-direction:column; gap:20px; margin-top:20px;">
+      {% for a in asignaciones %}
+        <div class="card" style="padding:16px; text-align:left; position:relative;">
+          <strong style="color:#58a6ff; font-size:1.2em;">
+            {{ a.rutina.nombre }}
+          </strong><br>
+          <small>Asignada: {{ a.asignada_el|date:"d M Y" }}</small>
+          <ul style="margin-top:8px; list-style:disc inside; font-size:.9em;">
+            {% for det in a.details_list %}
+              <li>
+                {{ det.ejercicio.nombre }}
+                {% if det.series %} — {{ det.series }}×{% endif %}
+                {% if det.reps %}{{ det.reps }}{% endif %}
+                {% if det.duracion %}, {{ det.duracion }} seg{% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+
+          {% if a.texto_comentario %}
+            <p style="margin-top:12px; font-style:italic; color:#8b949e;">
+              <strong>Comentarios del coach:</strong> {{ a.texto_comentario }}
+            </p>
+          {% endif %}
+          
+
+          {% if a.completada %}
+            <span style="
+              position:absolute;
+              top:12px; right:12px;
+              font-size:1.5em;
+              color:#3ea63e;
+            ">✔︎</span>
+          {% else %}
+            <form method="post" action="{% url 'cliente_completar' a.id %}"
+                  style="position:absolute; top:8px; right:12px;">
+              {% csrf_token %}
+              <button type="submit"
+                      style="
+                        padding:4px 8px;
+                        background:#238636;
+                        color:#fff;
+                        border:none;
+                        border-radius:4px;
+                        font-size:.85em;
+                        cursor:pointer;
+                      ">
+                Completar
+              </button>
+            </form>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No tienes rutinas asignadas.</p>
+  {% endif %}
+{% endblock %}

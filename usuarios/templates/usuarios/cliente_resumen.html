@@ -1,0 +1,63 @@
+{% extends 'usuarios/base_panel.html' %}
+{% block content %}
+  <h1>Resumen de la Semana</h1>
+
+  <div style="display:flex; gap:20px; margin-top:20px; flex-wrap:wrap;">
+    <!-- Card completadas esta semana -->
+    <div style="
+         background:#e83e8c;
+         color:white;
+         padding:20px;
+         border-radius:8px;
+         flex:1 1 200px;
+         text-align:center;
+       ">
+      <h2 style="font-size:2.5em; margin:0;">{{ progress.completadas_semana }}</h2>
+      <p>Rutinas completadas<br>esta semana</p>
+    </div>
+    <!-- Card total asignadas -->
+    <div style="
+         background:#8c3df8;
+         color:white;
+         padding:20px;
+         border-radius:8px;
+         flex:1 1 200px;
+         text-align:center;
+       ">
+      <h2 style="font-size:2.5em; margin:0;">{{ progress.total_asignadas }}</h2>
+      <p>Total de rutinas<br>asignadas</p>
+    </div>
+  </div>
+
+  <!-- Gráfica de avance -->
+  <div style="margin-top:40px;">
+    <canvas id="avanceChart" height="200"></canvas>
+  </div>
+
+  <!-- Carga Chart.js desde CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const ctx = document.getElementById('avanceChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: {{ chart_labels|safe }},   // cambiamos de char_labels a chart_labels
+        datasets: [{
+          label: 'Rutinas completadas',
+          data: {{ chart_values|safe }},   // cambiamos de char_data  a chart_values
+          fill: false,
+          tension: 0.3,
+          borderWidth: 3,
+        }]
+      },
+      options: {
+        scales: {
+          y: { beginAtZero: true, precision: 0 },
+        },
+        plugins: {
+          legend: { display: false },
+        }
+      }
+    });
+  </script>
+{% endblock %}

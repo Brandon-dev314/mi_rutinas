@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: django-app
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn mi_rutinas.wsgi:application"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: mi_rutinas.settings

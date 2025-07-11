@@ -1,0 +1,40 @@
+{% extends 'usuarios/base_panel.html' %}
+{% block content %}
+  <h1>Clientes</h1>
+  <a href="{% url 'cliente_crear' %}" class="btn-agg">+ Agregar Cliente</a>
+
+  {% if clientes %}
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Peso</th>
+          <th>Altura</th>
+          <th>Edad</th>
+          <th>Correo</th>
+          <th>Género</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in clientes %}
+          <tr>
+            <td>{{ c.user.username }}</td>
+            <td>{{ c.peso }}</td>
+            <td>{{ c.altura }}</td>
+            <td>{{ c.edad }}</td>
+            <td>{{ c.correo }}</td>
+            <td>{{ c.get_genero_display }}</td>
+            <td>
+              <a href="{% url 'cliente_editar' c.pk %}">Editar</a> |
+              <a href="{% url 'cliente_eliminar' c.pk %}">Eliminar</a> |
+              <a href="{% url 'cliente_rutinas' c.pk %}">Ver rutina</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No hay clientes aún.</p>
+  {% endif %}
+{% endblock %}

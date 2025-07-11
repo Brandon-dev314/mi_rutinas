@@ -1,0 +1,200 @@
+{% extends 'usuarios/base_panel.html' %}
+
+{% block content %}
+  <h1>Rutinas</h1>
+
+  <!-- 1. BARRA DE BÚSQUEDA + BOTÓN CREAR Y ASIGNAR -->
+  <form method="get" style="margin-bottom:20px; display:flex; gap:8px;">
+    <input
+      type="text"
+      name="q"
+      value="{{ q }}"
+      placeholder="Buscar ejercicio..."
+      style="
+        flex:1;
+        padding:8px;
+        border-radius:4px;
+        border:1px solid #30363d;
+        background-color: white;
+        color:#c9d1d9;
+      "
+    >
+
+    <select name="m"
+      style="flex:1; padding:8px; border-radius:4px; border:1px solid #30363d;
+             background-color:#0d1117; color:#c9d1d9;"
+    >
+      <option value="">Todos los músculos</option>
+      {% for musc in musculos %}
+        <option value="{{ musc }}"
+          {% if musc == m %}selected{% endif %}
+        >{{ musc }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit"
+      style="
+        padding:8px 16px;
+        border:none;
+        border-radius:4px;
+        background-color:#238636;
+        color:white;
+        font-weight:bold;
+        cursor:pointer;
+      "
+    >Buscar</button>
+
+    <!-- botón que abre el modal -->
+    <button type="button" id="openModalBtn"
+      style="
+        padding:8px 16px;
+        border:none;
+        border-radius:4px;
+        background-color:#238636;
+        color:white;
+        font-weight:bold;
+        cursor:pointer;
+      "
+    >Crear y asignar</button>
+  </form>
+
+  <!-- 2. GRID DE EJERCICIOS -->
+  {% if ejercicios %}
+    <div class="grid">
+      {% for ej in ejercicios %}
+        <div class="card">
+          <img src="{{ ej.gif_url }}" alt="{{ ej.nombre }}">
+          <h3>{{ ej.nombre }}</h3>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No se encontraron ejercicios{% if q %} para "{{ q }}"{% endif %}.
+       {%if m %} en "{{m}}"{%endif%}.
+    </p>
+  {% endif %}
+
+
+   <!-- 4. MODAL PARA CREAR + ASIGNAR (ajustado) -->
+  <div id="modal" style="
+      display:none;
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      background:rgba(0,0,0,0.7); justify-content:center; align-items:center;
+    ">
+    <div style="
+        background:#161b22; padding:20px; border-radius:6px;
+        width:90%; max-width:600px; max-height:90%; overflow-y:auto;
+        position:relative;
+      ">
+      <!-- botón cerrar -->
+      <span id="closeModal" style="
+          position:absolute; top:10px; right:15px;
+          font-size:24px; color:#c9d1d9; cursor:pointer;
+        ">&times;</span>
+
+      <h2 style="color:#c9d1d9; margin-bottom:15px;">Crear y asignar rutina</h2>
+      <form method="post" action="{% url 'panel_rutinas' %}" style="display:grid; gap:12px;">
+        {% csrf_token %}
+
+        <!-- nombre de la rutina -->
+        <input type="text" name="nombre" placeholder="Nombre de la rutina" required
+          style="width:100%; padding:8px; border-radius:4px;
+                 border:1px solid #30363d; background:#0d1117; color:#c9d1d9;">
+        
+        <input type="text" name="comentarios" placeholder="Comentarios sobre la rutina" required
+          style="width:100%; padding:8px; border-radius:4px;
+                 border:1px solid #30363d; background:#0d1117; color:#c9d1d9;">
+
+        <!-- selección de cliente -->
+        <select name="cliente" required
+          style="width:100%; padding:8px; border-radius:4px;
+                 border:1px solid #30363d; background:#0d1117; color:#c9d1d9;">
+          <option value="" disabled selected>Selecciona cliente</option>
+          {% for c in clientes %}
+            <option value="{{ c.pk }}">{{ c.user.username }}</option>
+          {% endfor %}
+        </select>
+
+        <!-- lista de ejercicios con checkbox -->
+        <div style="max-height:300px; overflow-y:auto; border:1px solid #30363d; border-radius:4px; padding:8px;">
+          <p style="color:#c9d1d9; margin-bottom:8px;">Selecciona ejercicios y detalla:</p>
+          {% for ej in ejercicios %}
+            <div style="margin-bottom:12px;">
+              <label style="color:#c9d1d9; cursor:pointer;">
+                <input 
+                  type="checkbox" 
+                  name="ejercicios" 
+                  value="{{ ej.pk }}"
+                  class="ej-checkbox" 
+                  data-id="{{ ej.pk }}"
+                  style="transform:scale(1.2); margin-right:8px;"
+                >
+                {{ ej.nombre }}
+              </label>
+
+              <div id="details-{{ ej.pk }}" style="display:none; margin-left:24px; margin-top:4px;">
+                <input 
+                  name="series-{{ ej.pk }}" 
+                  type="number" min="1" 
+                  placeholder="Series" 
+                  disabled
+                  style="width:30%; padding:6px; border-radius:4px;
+                         border:1px solid #30363d; background:#0d1117; color:#c9d1d9; margin-right:4px;"
+                >
+                <input 
+                  name="reps-{{ ej.pk }}"    
+                  type="number" min="1" 
+                  placeholder="Reps"
+                  disabled 
+                  style="width:30%; padding:6px; border-radius:4px;
+                         border:1px solid #30363d; background:#0d1117; color:#c9d1d9; margin-right:4px;"
+                >
+                <input 
+                  name="duracion-{{ ej.pk }}"
+                  type="number" min="1" 
+                  placeholder="Duración (seg)"
+                  disabled 
+                  style="width:30%; padding:6px; border-radius:4px;
+                         border:1px solid #30363d; background:#0d1117; color:#c9d1d9;"
+                >
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- botón enviar -->
+        <div style="text-align:right; margin-top:12px;">
+          <button type="submit"
+            style="padding:10px 20px; background:#238636; border:none;
+                   border-radius:6px; color:white; font-weight:bold; cursor:pointer;"
+          >Crear y asignar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- 5. JS para modal y campos dinámicos (ajustado) -->
+  <script>
+    // abrir/cerrar modal
+    document.getElementById('openModalBtn').onclick = () =>
+      document.getElementById('modal').style.display = 'flex';
+    document.getElementById('closeModal').onclick = () =>
+      document.getElementById('modal').style.display = 'none';
+
+    // habilitar/deshabilitar inputs según checkbox
+    document.querySelectorAll('.ej-checkbox').forEach(chk => {
+      chk.onchange = () => {
+        const details = document.getElementById('details-' + chk.dataset.id);
+        const inputs  = details.querySelectorAll('input[type="number"]');
+        if (chk.checked) {
+          details.style.display = 'block';
+          inputs.forEach(i => { i.disabled = false; i.required = false; });
+        } else {
+          details.style.display = 'none';
+          inputs.forEach(i => { i.disabled = true; i.required = false; });
+        }
+      };
+    });
+  </script>
+
+{% endblock %}

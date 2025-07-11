@@ -1,0 +1,59 @@
+{% extends 'usuarios/base_panel.html' %}
+{% block content %}
+  <h1>Rutinas de {{ cliente.nombre }}</h1>
+
+  {% if rutinas %}
+    <div style="display:flex; flex-direction:column; gap:20px; margin-top:20px;">
+     {% for r in rutinas %}
+        <div class="card" style="position:relative; padding:16px; text-align:left;">
+          {# Icono para eliminar asignación #}
+          <a href="{% url 'cliente_asignacion_eliminar' r.pk %}"
+            title="Eliminar asignación"
+            style="
+              position:absolute;
+              top:8px; right:12px;
+              font-size:1.2em;
+              color: var(--text-color);
+              text-decoration: none;
+            ">🗑️</a>
+
+          <strong style="color:#58a6ff; font-size:1.2em;">
+            {{ r.nombre }}
+          </strong><br>
+          <small>Asignada: {{ r.asignada_el|date:"d M Y H:i" }}</small>
+          <ul style="margin-top:8px; list-style:disc inside; font-size:.9em;">
+            {% for det in r.detalles %}
+              <li>
+                {{ det.nombre }} — {{ det.series }}×{{ det.reps }}, {{ det.duracion }} seg
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No hay rutinas asignadas para este cliente.</p>
+  {% endif %}
+
+  <p style="margin-top:20px;">
+    <a href="{% url 'panel_rutinas' %}"
+       style="color:#58a6ff; text-decoration:none;">
+      ← Volver a Rutinas
+    </a>
+  </p>
+
+  <script>
+    // Genera un color HSL aleatorio con buena saturación y brillo
+    function randomColor() {
+      const h = Math.floor(Math.random() * 360);      // matiz entre 0–360
+      const s = 60 + Math.random() * 20;             // saturación 60–80%
+      const l = 40 + Math.random() * 20;             // luminosidad 40–60%
+      return `hsl(${h}, ${s}%, ${l}%)`;
+    }
+
+    // Aplica un fondo aleatorio a cada tarjeta de rutina
+    document.querySelectorAll('.card').forEach(card => {
+      card.style.backgroundColor = randomColor();
+    });
+  </script>
+{% endblock %}

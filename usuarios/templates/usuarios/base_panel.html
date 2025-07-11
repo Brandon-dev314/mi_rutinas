@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Control</title>
+    <link rel="stylesheet" href="{% static 'usuarios/css/diseno.css' %}">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="logo">
+            <strong>MiApp Rutinas</strong>
+        </div>
+        <button id="theme-toggle" style="
+            background:none;
+            border:1px solid var(--text-color);
+            color: var(--text-color);
+            padding:4px 8px;
+            border-radius:4px;
+            cursor:pointer;
+            margin-right:1rem;
+       ">🌙╱☀️</button>
+        <div class="user-actions">
+            Hola, {{ user.username }} |
+            <a href="{% url 'logout' %}">Cerrar sesión</a>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <ul>
+                {% if user.perfil_cliente %}
+                {# Menú para el cliente #}
+                <li>
+                    <a href="{% url 'cliente_resumen' %}"
+                    class="{% if request.resolver_match.url_name == 'cliente_resumen' %}active{% endif %}">
+                    Resumen
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'cliente_mis_rutinas' %}"
+                        class="{% if request.resolver_match.url_name == 'cliente_mis_rutinas' %}active{% endif %}">
+                        Mis rutinas
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'cliente_contactar' %}"
+                    class="{% if request.resolver_match.url_name == 'cliente_contactar' %}active{% endif %}">
+                    Contactar
+                    </a>
+                </li>
+                {% else %}
+                {# Menú para el coach #}
+                <li>
+                    <a href="{% url 'panel_resumen' %}"
+                    class="{% if request.resolver_match.url_name == 'panel_resumen' %}active{% endif %}">
+                    Resumen
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'panel_rutinas' %}"
+                    class="{% if request.resolver_match.url_name == 'panel_rutinas' %}active{% endif %}">
+                    Rutinas
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'panel_clientes' %}"
+                    class="{% if request.resolver_match.url_name == 'panel_clientes' %}active{% endif %}">
+                    Clientes
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </aside>
+
+        <!-- CONTENIDO DINÁMICO -->
+        <main class="content">
+            {% block content %}
+            <!-- Aquí va cada sección -->
+            {% endblock %}
+        </main>
+    </div>
+
+</body>
+
+    <script>
+        document.getElementById('theme-toggle').addEventListener('click', () =>
+        document.body.classList.toggle('light-mode')
+      );
+    </script>
+
+</html>

@@ -1,0 +1,10 @@
+{% extends 'usuarios/base_panel.html' %}
+{% block content %}
+  <h1>Eliminar Cliente</h1>
+  <p>¿Seguro que quieres eliminar a <strong>{{ cliente.nombre }}</strong>?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn-agg">Sí, eliminar</button>
+    <a href="{% url 'panel_clientes' %}" class="btn-agg">Cancelar</a>
+  </form>
+{% endblock %}

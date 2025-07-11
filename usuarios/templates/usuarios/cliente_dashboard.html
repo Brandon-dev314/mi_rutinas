@@ -1,0 +1,52 @@
+{# usuarios/templates/usuarios/cliente_dashboard.html #}
+{% extends 'usuarios/base_panel.html' %}
+{% block content %}
+  <h1>Tus rutinas</h1>
+
+  {% if rutinas %}
+    <div class="grid" style="gap:20px;">
+      {% for r in rutinas %}
+        <details class="card" style="padding:16px; position:relative;">
+          <summary style="
+            cursor:pointer;
+            list-style:none;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+          ">
+            <div>
+              <strong style="font-size:1.1em;">{{ r.nombre }}</strong><br>
+              <small>Asignada: {{ r.asignada_el|date:"d M Y" }}</small>
+            </div>
+
+            {% if r.completada %}
+              <span style="color:#4CAF50; font-size:24px;">&#10003;</span>
+            {% else %}
+              <form method="post" action="{% url 'cliente_completar' r.id %}" style="margin:0;">
+                {% csrf_token %}
+                <button type="submit" style="
+                  background:#238636;
+                  color:white;
+                  border:none;
+                  padding:6px 12px;
+                  border-radius:4px;
+                  cursor:pointer;
+                ">Completado</button>
+              </form>
+            {% endif %}
+          </summary>
+
+          <ul style="margin-top:12px; padding-left:20px; font-size:.9em;">
+            {% for det in r.detalles %}
+              <li>
+                {{ det.nombre }} — {{ det.series }}×{{ det.reps }}, {{ det.duracion }} seg
+              </li>
+            {% endfor %}
+          </ul>
+        </details>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No tienes rutinas asignadas.</p>
+  {% endif %}
+{% endblock %}
