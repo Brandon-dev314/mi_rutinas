@@ -190,3 +190,14 @@ table th, table td {
   margin-top: 5px;
   display: block;
 }
+
+/* Si quieres que siempre sean negras las letras */
+.cliente-form .cliente-field input,
+.cliente-form .cliente-field select {
+  color: #000;
+}
+/* Opcionalmente, sólo al enfocar */
+.cliente-form .cliente-field input:focus,
+.cliente-form .cliente-field select:focus {
+  color: #000;
+}
