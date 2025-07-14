@@ -168,7 +168,7 @@ def panel_rutinas(request):
                     subject=f"Tu rutina {rutina.nombre}",
                     body="¡Hola! Te envío tu rutina de ejercicios en PDF, con imágenes incluidas.",
                     from_email=settings.DEFAULT_FROM_EMAIL,
-                    to=[cliente.correo],
+                    to=[cliente.Correo],
                 )
                 filename = f"Rutina_{rutina.nombre.replace(' ','_')}.pdf"
                 email.attach(filename, buffer.read(), 'application/pdf')
