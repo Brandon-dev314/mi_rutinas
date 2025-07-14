@@ -19,7 +19,7 @@
       <tbody>
         {% for c in clientes %}
           <tr>
-            <td>{{ c.user.username }}</td>
+            <td>{{ c.user.username }} {{c.user.first_name}} {{c.user.last_name}}</td>
             <td>{{ c.Peso }}</td>
             <td>{{ c.Altura }}</td>
             <td>{{ c.Edad }}</td>
