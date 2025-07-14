@@ -111,7 +111,7 @@
                  border:1px solid #30363d; background:#0d1117; color:#c9d1d9;">
           <option value="" disabled selected>Selecciona cliente</option>
           {% for c in clientes %}
-            <option value="{{ c.pk }}">{{ c.user.username }}</option>
+            <option value="{{ c.pk }}">{{ c.user.username }} {{c.user.first_name}} {{c.user.last_name}}</option>
           {% endfor %}
         </select>
 
