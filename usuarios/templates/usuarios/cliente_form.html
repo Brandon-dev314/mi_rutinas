@@ -1,4 +1,3 @@
-<!-- cliente_form.html (plantilla de formulario con diseño mejorado) -->
 {% extends "usuarios/base_panel.html" %}
 {% load static %}
 
@@ -10,17 +9,17 @@
       {% csrf_token %}
       <div class="cliente-row">
         <div class="cliente-col">
-          <div class="cliente-field{% if form.Nombre.errors %} error{% endif %}">
-            {{ form.Nombre.label_tag }}<br>
-            {{ form.Nombre }}
-            {% for error in form.Nombre.errors %}
+          <div class="cliente-field{% if form.username.errors %} error{% endif %}">
+            {{ form.username.label_tag }}<br>
+            {{ form.username }}
+            {% for error in form.username.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
-          <div class="cliente-field{% if form.Contraseña.errors %} error{% endif %}">
-            {{ form.Contraseña.label_tag }}<br>
-            {{ form.Contraseña }}
-            {% for error in form.Contraseña.errors %}
+          <div class="cliente-field{% if form.password1.errors %} error{% endif %}">
+            {{ form.password1.label_tag }}<br>
+            {{ form.password1 }}
+            {% for error in form.password1.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
@@ -31,40 +30,40 @@
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
-          <div class="cliente-field{% if form.Correo.errors %} error{% endif %}">
-            {{ form.Correo.label_tag }}<br>
-            {{ form.Correo }}
-            {% for error in form.Correo.errors %}
+          <div class="cliente-field{% if form.correo.errors %} error{% endif %}">
+            {{ form.correo.label_tag }}<br>
+            {{ form.correo }}
+            {% for error in form.correo.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
         </div>
         <div class="cliente-col">
-          <div class="cliente-field{% if form.Edad.errors %} error{% endif %}">
-            {{ form.Edad.label_tag }}<br>
-            {{ form.Edad }}
-            {% for error in form.Edad.errors %}
+          <div class="cliente-field{% if form.edad.errors %} error{% endif %}">
+            {{ form.edad.label_tag }}<br>
+            {{ form.edad }}
+            {% for error in form.edad.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
-          <div class="cliente-field{% if form.Peso.errors %} error{% endif %}">
-            {{ form.Peso.label_tag }}<br>
-            {{ form.Peso }}
-            {% for error in form.Peso.errors %}
+          <div class="cliente-field{% if form.peso.errors %} error{% endif %}">
+            {{ form.peso.label_tag }}<br>
+            {{ form.peso }}
+            {% for error in form.peso.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
-          <div class="cliente-field{% if form.Altura.errors %} error{% endif %}">
-            {{ form.Altura.label_tag }}<br>
-            {{ form.Altura }}
-            {% for error in form.Altura.errors %}
+          <div class="cliente-field{% if form.altura.errors %} error{% endif %}">
+            {{ form.altura.label_tag }}<br>
+            {{ form.altura }}
+            {% for error in form.altura.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
-          <div class="cliente-field{% if form.Genero.errors %} error{% endif %}">
-            {{ form.Genero.label_tag }}<br>
-            {{ form.Genero }}
-            {% for error in form.Genero.errors %}
+          <div class="cliente-field{% if form.genero.errors %} error{% endif %}">
+            {{ form.genero.label_tag }}<br>
+            {{ form.genero }}
+            {% for error in form.genero.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
