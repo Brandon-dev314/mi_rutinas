@@ -7,3 +7,4 @@ services:
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: mi_rutinas.settings
+    staticPublishPath: staticfiles
