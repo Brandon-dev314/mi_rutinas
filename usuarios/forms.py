@@ -6,6 +6,11 @@ from .models import Cliente
 User = get_user_model()
 
 class ClienteForm(UserCreationForm):
+    # nuevos campos de nombre y apellidos
+    first_name = forms.CharField(label="Nombre")
+    last_name  = forms.CharField(label="Apellidos")
+
+    # campos extra para el perfil Cliente
     peso   = forms.FloatField(label="Peso (kg)")
     altura = forms.FloatField(label="Altura (cm)")
     edad   = forms.IntegerField(label="Edad")
@@ -17,4 +22,10 @@ class ClienteForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model  = User
-        fields = ["username", "password1", "password2"]
+        fields = [
+            "username",
+            "first_name",    # aquí va Nombre
+            "last_name",     # aquí van Apellidos
+            "password1",
+            "password2",
+        ]
