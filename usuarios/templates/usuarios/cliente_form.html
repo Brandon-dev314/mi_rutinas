@@ -10,14 +10,14 @@
       {% csrf_token %}
       <div class="cliente-row">
         <div class="cliente-col">
-          <div class="cliente-field{% if form.username.errors %} error{% endif %}">
+          <div class="cliente-field{% if form.Nombre.errors %} error{% endif %}">
             {{ form.Nombre.label_tag }}<br>
             {{ form.Nombre }}
             {% for error in form.Nombre.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
-          <div class="cliente-field{% if form.password1.errors %} error{% endif %}">
+          <div class="cliente-field{% if form.Contraseña.errors %} error{% endif %}">
             {{ form.Contraseña.label_tag }}<br>
             {{ form.Contraseña }}
             {% for error in form.Contraseña.errors %}
@@ -31,7 +31,7 @@
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
-          <div class="cliente-field{% if form.correo.errors %} error{% endif %}">
+          <div class="cliente-field{% if form.Correo.errors %} error{% endif %}">
             {{ form.Correo.label_tag }}<br>
             {{ form.Correo }}
             {% for error in form.Correo.errors %}
@@ -40,28 +40,28 @@
           </div>
         </div>
         <div class="cliente-col">
-          <div class="cliente-field{% if form.edad.errors %} error{% endif %}">
+          <div class="cliente-field{% if form.Edad.errors %} error{% endif %}">
             {{ form.Edad.label_tag }}<br>
             {{ form.Edad }}
             {% for error in form.Edad.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
-          <div class="cliente-field{% if form.peso.errors %} error{% endif %}">
+          <div class="cliente-field{% if form.Peso.errors %} error{% endif %}">
             {{ form.Peso.label_tag }}<br>
             {{ form.Peso }}
             {% for error in form.Peso.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
-          <div class="cliente-field{% if form.altura.errors %} error{% endif %}">
+          <div class="cliente-field{% if form.Altura.errors %} error{% endif %}">
             {{ form.Altura.label_tag }}<br>
             {{ form.Altura }}
             {% for error in form.Altura.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
-          <div class="cliente-field{% if form.genero.errors %} error{% endif %}">
+          <div class="cliente-field{% if form.Genero.errors %} error{% endif %}">
             {{ form.Genero.label_tag }}<br>
             {{ form.Genero }}
             {% for error in form.Genero.errors %}
