@@ -20,10 +20,10 @@
         {% for c in clientes %}
           <tr>
             <td>{{ c.user.username }}</td>
-            <td>{{ c.peso }}</td>
-            <td>{{ c.altura }}</td>
-            <td>{{ c.edad }}</td>
-            <td>{{ c.correo }}</td>
+            <td>{{ c.Peso }}</td>
+            <td>{{ c.Altura }}</td>
+            <td>{{ c.Edad }}</td>
+            <td>{{ c.Correo }}</td>
             <td>{{ c.get_genero_display }}</td>
             <td>
               <a href="{% url 'cliente_editar' c.pk %}">Editar</a> |
