@@ -278,11 +278,11 @@ def cliente_crear(request):
             Cliente.objects.create(
                 coach=request.user,
                 user=user,
-                peso=data['Peso'],
-                altura=data['Altura'],
-                edad=data['Edad'],
-                correo=data['Correo'],
-                genero=data['Genero']
+                Peso=data['Peso'],
+                Altura=data['Altura'],
+                Edad=data['Edad'],
+                Correo=data['Correo'],
+                Genero=data['Genero']
             )
             return redirect('panel_clientes')
     else:
