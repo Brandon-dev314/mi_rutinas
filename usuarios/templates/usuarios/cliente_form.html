@@ -11,16 +11,16 @@
       <div class="cliente-row">
         <div class="cliente-col">
           <div class="cliente-field{% if form.username.errors %} error{% endif %}">
-            {{ form.username.label_tag }}<br>
-            {{ form.username }}
-            {% for error in form.username.errors %}
+            {{ form.Nombre.label_tag }}<br>
+            {{ form.Nombre }}
+            {% for error in form.Nombre.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
           <div class="cliente-field{% if form.password1.errors %} error{% endif %}">
-            {{ form.password1.label_tag }}<br>
-            {{ form.password1 }}
-            {% for error in form.password1.errors %}
+            {{ form.Contraseña.label_tag }}<br>
+            {{ form.Contraseña }}
+            {% for error in form.Contraseña.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
@@ -32,39 +32,39 @@
             {% endfor %}
           </div>
           <div class="cliente-field{% if form.correo.errors %} error{% endif %}">
-            {{ form.correo.label_tag }}<br>
-            {{ form.correo }}
-            {% for error in form.correo.errors %}
+            {{ form.Correo.label_tag }}<br>
+            {{ form.Correo }}
+            {% for error in form.Correo.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
         </div>
         <div class="cliente-col">
           <div class="cliente-field{% if form.edad.errors %} error{% endif %}">
-            {{ form.edad.label_tag }}<br>
-            {{ form.edad }}
-            {% for error in form.edad.errors %}
+            {{ form.Edad.label_tag }}<br>
+            {{ form.Edad }}
+            {% for error in form.Edad.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
           <div class="cliente-field{% if form.peso.errors %} error{% endif %}">
-            {{ form.peso.label_tag }}<br>
-            {{ form.peso }}
-            {% for error in form.peso.errors %}
+            {{ form.Peso.label_tag }}<br>
+            {{ form.Peso }}
+            {% for error in form.Peso.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
           <div class="cliente-field{% if form.altura.errors %} error{% endif %}">
-            {{ form.altura.label_tag }}<br>
-            {{ form.altura }}
-            {% for error in form.altura.errors %}
+            {{ form.Altura.label_tag }}<br>
+            {{ form.Altura }}
+            {% for error in form.Altura.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
           <div class="cliente-field{% if form.genero.errors %} error{% endif %}">
-            {{ form.genero.label_tag }}<br>
-            {{ form.genero }}
-            {% for error in form.genero.errors %}
+            {{ form.Genero.label_tag }}<br>
+            {{ form.Genero }}
+            {% for error in form.Genero.errors %}
               <small class="error-text">{{ error }}</small>
             {% endfor %}
           </div>
