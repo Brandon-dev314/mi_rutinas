@@ -16,6 +16,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Ejercicio, Cliente, Rutina, RutinaAsignada, Notification
 from .forms import ClienteForm
+import logging
 
 User = get_user_model()
 
@@ -90,16 +91,10 @@ def panel_rutinas(request):
 
         if nombre and ejercicio_ids and cliente_id:
             # 2. Crear Rutina con owner y asignar ejercicios
-            rutina = Rutina.objects.create(
-                nombre=nombre,
-                owner=request.user
-            )
-            rutina.ejercicios.set(
-                Ejercicio.objects.filter(pk__in=ejercicio_ids)
-            )
+            rutina = Rutina.objects.create(nombre=nombre, owner=request.user)
+            rutina.ejercicios.set(Ejercicio.objects.filter(pk__in=ejercicio_ids))
 
             # 3. Construir JSON de detalles
-               # 3. Construir JSON de detalles (solo parsear cuando venga un número)
             detalles = {}
             for ej_id in ejercicio_ids:
                 s = request.POST.get(f'series-{ej_id}', '').strip()
@@ -119,29 +114,25 @@ def panel_rutinas(request):
                 rutina=rutina,
                 cliente=cliente,
                 detalles=detalles,
-                comentarios=comentarios,  
+                comentarios=comentarios,
             )
 
             # 5. Generar PDF con imágenes
             buffer = io.BytesIO()
             p = canvas.Canvas(buffer, pagesize=(595, 842))  # A4
-
             p.setFont("Helvetica-Bold", 16)
             p.drawString(40, 800, f"Rutina: {rutina.nombre}")
-            
-            
+
             if comentarios:
                 p.setFont("Helvetica", 12)
-                
                 p.drawString(40, 780, f"Comentarios: {comentarios}")
                 y = 750
             else:
                 y = 770
-                
+
             for ej_id, det in detalles.items():
-                # Descargar y preparar imagen
-                url   = Ejercicio.objects.values_list('gif_url', flat=True).get(pk=ej_id)
-                resp  = requests.get(url, timeout=5)
+                url = Ejercicio.objects.values_list('gif_url', flat=True).get(pk=ej_id)
+                resp = requests.get(url, timeout=5)
                 img_pil = PILImage.open(io.BytesIO(resp.content)).convert("RGB")
                 img_pil.thumbnail((100, 100), PILImage.LANCZOS)
 
@@ -150,7 +141,6 @@ def panel_rutinas(request):
                 img_buf.seek(0)
                 img = ImageReader(img_buf)
 
-                # Dibujar imagen y texto
                 p.drawImage(img, 40, y-100, width=100, height=100, mask='auto')
                 p.setFont("Helvetica", 12)
                 nombre_ej = Ejercicio.objects.values_list('nombre', flat=True).get(pk=ej_id)
@@ -161,7 +151,6 @@ def panel_rutinas(request):
                     partes.append(f"{det['duracion']} seg")
 
                 texto = f"{nombre_ej}: " + ", ".join(partes) if partes else nombre_ej
-
                 p.drawString(150, y-20, texto)
 
                 y -= 130
@@ -173,39 +162,40 @@ def panel_rutinas(request):
             p.save()
             buffer.seek(0)
 
-            # 6. Enviar correo con PDF
-            email = EmailMessage(
-                subject=f"Tu rutina {rutina.nombre}",
-                body="¡Hola! Te envío tu rutina de ejercicios en PDF, con imágenes incluidas.",
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                to=[cliente.correo],
-            )
-            filename = f"Rutina_{rutina.nombre.replace(' ','_')}.pdf"
-            email.attach(filename, buffer.read(), 'application/pdf')
-            email.send()
+            # 6. Enviar correo con PDF (protegido con try/except)  # <--
+            try:
+                email = EmailMessage(
+                    subject=f"Tu rutina {rutina.nombre}",
+                    body="¡Hola! Te envío tu rutina de ejercicios en PDF, con imágenes incluidas.",
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    to=[cliente.correo],
+                )
+                filename = f"Rutina_{rutina.nombre.replace(' ','_')}.pdf"
+                email.attach(filename, buffer.read(), 'application/pdf')
+                email.send()
+            except Exception as e:
+                logging.error("Error enviando email de rutina: %s", e)  # <--
 
         return redirect('panel_rutinas')
 
     # GET: búsqueda y modal
     q = request.GET.get('q', '').strip()
     m = request.GET.get('m', '').strip()
-    
 
     ejercicios = Ejercicio.objects.all()
     if q:
         ejercicios = ejercicios.filter(nombre__icontains=q)
     if m:
         ejercicios = ejercicios.filter(musculo=m)
-        
-    musculos = Ejercicio.objects.values_list('musculo', flat=True).distinct()
 
+    musculos = Ejercicio.objects.values_list('musculo', flat=True).distinct()
     clientes = Cliente.objects.filter(coach=request.user)
 
     return render(request, 'usuarios/panel_rutinas.html', {
         'ejercicios': ejercicios,
         'q':           q,
-        'musculos': musculos,
-        'm': m,
+        'musculos':   musculos,
+        'm':           m,
         'clientes':    clientes,
     })
 
