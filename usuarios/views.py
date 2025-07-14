@@ -258,26 +258,31 @@ def cliente_crear(request):
     if request.method == 'POST':
         form = ClienteForm(request.POST)
         if form.is_valid():
-            # 1) Creamos el User
-            user = form.save()
-            # 2) Creamos el Cliente enlazando coach=request.user
+            # 1) Guardar User
+            user = form.save(commit=False)
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name  = form.cleaned_data['last_name']
+            user.save()
+
+            # 2) Crear perfil Cliente enlazado
             Cliente.objects.create(
                 coach   = request.user,
                 user    = user,
-                Peso    = form.cleaned_data["peso"],
-                Altura  = form.cleaned_data["altura"],
-                Edad    = form.cleaned_data["edad"],
-                Correo  = form.cleaned_data["correo"],
-                Genero  = form.cleaned_data["genero"],
+                Peso    = form.cleaned_data['peso'],
+                Altura  = form.cleaned_data['altura'],
+                Edad    = form.cleaned_data['edad'],
+                Correo  = form.cleaned_data['correo'],
+                Genero  = form.cleaned_data['genero'],
             )
-            return redirect("panel_clientes")
+            return redirect('panel_clientes')
     else:
         form = ClienteForm()
 
-    return render(request, "usuarios/cliente_form.html", {
-        "form":   form,
-        "titulo": "Agregar cliente"
+    return render(request, 'usuarios/cliente_form.html', {
+        'form':   form,
+        'titulo': 'Agregar cliente'
     })
+
 
 
 
