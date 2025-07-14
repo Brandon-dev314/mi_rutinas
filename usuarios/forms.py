@@ -7,8 +7,8 @@ User = get_user_model()
 
 class ClienteForm(UserCreationForm):
     # nuevos campos de nombre y apellidos
-    first_name = forms.CharField(label="Nombre")
-    last_name  = forms.CharField(label="Apellidos")
+    first_name = forms.CharField(label="Primer apellido")
+    last_name  = forms.CharField(label="Segundo apellido")
 
     # campos extra para el perfil Cliente
     peso   = forms.FloatField(label="Peso (kg)")
